@@ -1,49 +1,87 @@
 package com.blog.dao;
 
-import com.blog.model.User;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
-import java.util.Properties;
+import com.blog.entity.User;
+import com.blog.util.StringUtils;
 
-public class UserDAO {
-    // 加载数据库配置
-    private static Properties props = new Properties();
-    static {
-        try (InputStream is = UserDAO.class.getClassLoader().getResourceAsStream("db.properties")) {
-            props.load(is);
-        } catch (IOException e) {
+public class UserDAO extends BaseDAO {
+
+    public User findByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE username = ? AND status = 1";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return mapResultSetToUser(rs);
+            }
+            return null;
+        } catch (SQLException e) {
             e.printStackTrace();
+            return null;
+        } finally {
+            close(conn, pstmt, rs);
         }
     }
 
-    // 根据用户名和密码查询用户（登录验证）
-    public User findUserByUsernameAndPwd(String username, String password) {
-        User user = null;
-        String sql = "SELECT id, username, password, nickname FROM user WHERE username = ? AND password = ?";
+    public User findByUsernameAndPassword(String username, String password) {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ? AND status = 1";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-        try (Connection conn = DriverManager.getConnection(
-                props.getProperty("url"),
-                props.getProperty("username"),
-                props.getProperty("password")
-        );
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            Class.forName(props.getProperty("driver"));
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setNickname(rs.getString("nickname"));
+                return mapResultSetToUser(rs);
             }
-        } catch (ClassNotFoundException | SQLException e) {
+            return null;
+        } catch (SQLException e) {
             e.printStackTrace();
+            return null;
+        } finally {
+            close(conn, pstmt, rs);
         }
+    }
+
+    public boolean addUser(User user) {
+        String sql = "INSERT INTO users(username, password, email, avatar, role, create_time) VALUES(?, ?, ?, ?, 'user', NOW())";
+
+        try {
+            Integer id = executeUpdate(sql,
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getEmail(),
+                    user.getAvatar()
+            );
+            return id != null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        user.setEmail(rs.getString("email"));
+        user.setAvatar(rs.getString("avatar"));
+        user.setRole(rs.getString("role"));
+        user.setCreateTime(rs.getTimestamp("create_time"));
+        user.setUpdateTime(rs.getTimestamp("update_time"));
         return user;
     }
 }

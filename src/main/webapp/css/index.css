@@ -1,0 +1,128 @@
+/* 首页特定样式 */
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* 文章列表 */
+.article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.article-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.article-item:last-child {
+    border-bottom: none;
+}
+
+.article-cover {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.article-content h3 {
+    margin-bottom: 0.5rem;
+}
+
+.article-content h3 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.article-content h3 a:hover {
+    color: #007bff;
+}
+
+.article-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.article-summary {
+    color: #666;
+    line-height: 1.6;
+}
+
+.article-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #999;
+}
+
+/* 侧边栏 */
+.sidebar-widget {
+    margin-bottom: 2rem;
+}
+
+.widget-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #007bff;
+}
+
+.category-list,
+.popular-list {
+    list-style: none;
+}
+
+.category-list li,
+.popular-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.category-list li:last-child,
+.popular-list li:last-child {
+    border-bottom: none;
+}
+
+.category-list a,
+.popular-list a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.category-list a:hover,
+.popular-list a:hover {
+    color: #007bff;
+}
+
+.popular-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-count {
+    color: #999;
+    font-size: 0.8rem;
+}

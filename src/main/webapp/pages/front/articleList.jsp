@@ -1,129 +1,163 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <title>PersonalBlog - 文章列表</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/5.3.0/css/bootstrap.min.css">
-    <style>
-        .navbar { box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .article-item { border-bottom: 1px dashed #eee; padding: 15px 0; }
-        .article-item:last-child { border-bottom: none; }
-        .footer { margin-top: 50px; padding: 20px 0; background-color: #f8f9fa; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章列表 - 个人博客</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/global.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
 </head>
 <body>
-<!-- 导航栏（复用首页导航栏） -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
+<!-- 头部导航 -->
+<header class="header">
     <div class="container">
-        <a class="navbar-brand fs-4 fw-bold" href="${pageContext.request.contextPath}/pages/front/index.jsp">
-            PersonalBlog
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.jsp">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="articleList.jsp">文章列表</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="category.jsp">文章分类</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.jsp">关于我</a>
-                </li>
+        <nav class="navbar">
+            <a href="${pageContext.request.contextPath}/" class="logo">个人博客</a>
+            <ul class="nav-links">
+                <li><a href="${pageContext.request.contextPath}/">首页</a></li>
+                <li><a href="${pageContext.request.contextPath}/article/list" class="active">文章</a></li>
+                <c:if test="${not empty sessionScope.user}">
+                    <li><a href="${pageContext.request.contextPath}/pages/back/adminIndex.jsp">管理</a></li>
+                    <li><a href="${pageContext.request.contextPath}/logout">退出</a></li>
+                </c:if>
+                <c:if test="${empty sessionScope.user}">
+                    <li><a href="${pageContext.request.contextPath}/login">登录</a></li>
+                </c:if>
             </ul>
-            <a class="btn btn-outline-primary" href="${pageContext.request.contextPath}/pages/back/login.jsp">
-                后台登录
-            </a>
-        </div>
+        </nav>
     </div>
-</nav>
+</header>
 
-<!-- 主体内容 -->
-<div class="container mt-5">
-    <div class="row">
-        <!-- 文章列表（左侧8列） -->
-        <div class="col-lg-8">
-            <h3 class="mb-4 border-bottom pb-2">全部文章</h3>
-            <!-- 文章项1 -->
-            <div class="article-item">
-                <h5>
-                    <a href="articleDetail.jsp" class="text-decoration-none text-dark">Java Web入门：MVC模式详解</a>
-                </h5>
-                <p class="text-muted small">
-                    <span class="me-3"><i class="bi bi-calendar"></i> 2024-09-01</span>
-                    <span class="me-3"><i class="bi bi-folder"></i> 技术笔记</span>
-                    <span class="me-3"><i class="bi bi-tags"></i> Java, MVC</span>
-                    <span><i class="bi bi-eye"></i> 128</span>
-                </p>
-                <p>本文详细讲解MVC设计模式的原理、分层思想，以及在Java Web项目中的实际应用，适合入门开发者学习。通过案例演示如何将Model、View、Controller分层实现，降低代码耦合度...</p>
-                <a href="articleDetail.jsp" class="btn btn-sm btn-primary">阅读更多</a>
-            </div>
-            <!-- 文章项2 -->
-            <div class="article-item">
-                <h5>
-                    <a href="articleDetail.jsp" class="text-decoration-none text-dark">Bootstrap 5 快速搭建响应式页面</a>
-                </h5>
-                <p class="text-muted small">
-                    <span class="me-3"><i class="bi bi-calendar"></i> 2024-08-25</span>
-                    <span class="me-3"><i class="bi bi-folder"></i> 前端开发</span>
-                    <span class="me-3"><i class="bi bi-tags"></i> Bootstrap, 前端</span>
-                    <span><i class="bi bi-eye"></i> 96</span>
-                </p>
-                <p>Bootstrap 5是目前流行的前端框架，本文介绍如何使用Bootstrap的栅格系统、组件快速实现响应式页面，提升开发效率。包括导航栏、轮播图、卡片等组件的使用，以及自定义样式的方法...</p>
-                <a href="articleDetail.jsp" class="btn btn-sm btn-primary">阅读更多</a>
-            </div>
-            <!-- 分页 -->
-            <nav aria-label="Page navigation example" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled"><a class="page-link" href="#">上一页</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">下一页</a></li>
-                </ul>
-            </nav>
-        </div>
-
-        <!-- 分类筛选（右侧4列） -->
-        <div class="col-lg-4">
-            <h3 class="mb-4 border-bottom pb-2">文章分类</h3>
+<!-- 主要内容 -->
+<main class="container">
+    <div class="main-content">
+        <!-- 文章列表 -->
+        <div class="content-left">
             <div class="card">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="articleList.jsp?category=技术笔记" class="text-decoration-none">技术笔记</a>
-                        <span class="badge bg-primary rounded-pill">12</span>
+                <div class="article-header">
+                    <h1>所有文章</h1>
+                    <p>共 ${articles.size()} 篇文章</p>
+                </div>
+
+                <div class="article-list">
+                    <c:forEach var="article" items="${articles}">
+                        <div class="article-item">
+                            <c:if test="${not empty article.coverImage}">
+                                <img src="${article.coverImage}" alt="${article.title}" class="article-cover">
+                            </c:if>
+                            <c:if test="${empty article.coverImage}">
+                                <div class="article-cover" style="background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                    <span style="color: #999; font-size: 14px;">暂无图片</span>
+                                </div>
+                            </c:if>
+                            <div class="article-content">
+                                <h3>
+                                    <a href="${pageContext.request.contextPath}/article/detail?id=${article.id}">
+                                            ${article.title}
+                                    </a>
+                                </h3>
+                                <div class="article-meta">
+                                    <span>作者: ${article.authorName}</span>
+                                    <span>
+                                            <fmt:formatDate value="${article.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                                        </span>
+                                    <span>分类: ${article.categoryName}</span>
+                                </div>
+                                <p class="article-summary">${article.summary}</p>
+                                <div class="article-stats">
+                                    <span>阅读 ${article.viewCount}</span>
+                                    <span>评论 ${article.commentCount}</span>
+                                    <span>点赞 ${article.likeCount}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                    <c:if test="${empty articles}">
+                        <div class="empty-state">
+                            <h3>暂无文章</h3>
+                            <p>还没有发布任何文章</p>
+                        </div>
+                    </c:if>
+                </div>
+
+                <!-- 分页 -->
+                <div class="pagination">
+                    <c:if test="${currentPage > 1}">
+                        <a href="${pageContext.request.contextPath}/article/list?page=${currentPage - 1}" class="btn btn-outline">上一页</a>
+                    </c:if>
+
+                    <span class="page-info">第 ${currentPage} 页</span>
+
+                    <c:if test="${not empty articles && articles.size() == 10}">
+                        <a href="${pageContext.request.contextPath}/article/list?page=${currentPage + 1}" class="btn btn-outline">下一页</a>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <!-- 搜索框 -->
+            <div class="card sidebar-widget">
+                <form id="search-form" class="search-form">
+                    <div class="form-group">
+                        <input type="text" name="q" class="form-control" placeholder="搜索文章...">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">搜索</button>
+                </form>
+            </div>
+
+            <!-- 分类 -->
+            <div class="card sidebar-widget">
+                <h3 class="widget-title">文章分类</h3>
+                <ul class="category-list">
+                    <li><a href="#">Java开发 (15)</a></li>
+                    <li><a href="#">前端技术 (8)</a></li>
+                    <li><a href="#">数据库 (6)</a></li>
+                    <li><a href="#">架构设计 (4)</a></li>
+                    <li><a href="#">生活随笔 (12)</a></li>
+                </ul>
+            </div>
+
+            <!-- 热门文章 -->
+            <div class="card sidebar-widget">
+                <h3 class="widget-title">热门文章</h3>
+                <ul class="popular-list">
+                    <li>
+                        <div class="popular-item">
+                            <a href="#">Spring Boot实战教程</a>
+                            <span class="view-count">1.2k</span>
+                        </div>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="articleList.jsp?category=前端开发" class="text-decoration-none">前端开发</a>
-                        <span class="badge bg-primary rounded-pill">8</span>
+                    <li>
+                        <div class="popular-item">
+                            <a href="#">Vue3组合式API详解</a>
+                            <span class="view-count">980</span>
+                        </div>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="articleList.jsp?category=后端开发" class="text-decoration-none">后端开发</a>
-                        <span class="badge bg-primary rounded-pill">15</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="articleList.jsp?category=学习心得" class="text-decoration-none">学习心得</a>
-                        <span class="badge bg-primary rounded-pill">5</span>
+                    <li>
+                        <div class="popular-item">
+                            <a href="#">MySQL性能优化指南</a>
+                            <span class="view-count">856</span>
+                        </div>
                     </li>
                 </ul>
             </div>
-        </div>
+        </aside>
     </div>
-</div>
+</main>
 
-<!-- 页脚（复用首页页脚） -->
-<div class="footer text-center">
+<!-- 页脚 -->
+<footer class="footer">
     <div class="container">
-        <p class="mb-0">个人博客 | 设计与开发：第九小组</p>
+        <p>&copy; 2024 个人博客. All rights reserved.</p>
     </div>
-</div>
+</footer>
 
-<script src="${pageContext.request.contextPath}/webjars/jquery/3.6.4/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<script src="${pageContext.request.contextPath}/js/common.js"></script>
 </body>
 </html>
